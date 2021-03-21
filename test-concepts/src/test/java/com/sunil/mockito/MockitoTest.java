@@ -1,21 +1,24 @@
-package com.sunil;
+package com.sunil.mockito;
 
+import com.sunil.email.Email;
+import com.sunil.email.EmailService;
+import com.sunil.email.Format;
+import com.sunil.email.Platform;
 import org.junit.Assert;
 import org.junit.Test;
-import org.junit.jupiter.api.Assertions;
+import static org.junit.jupiter.api.Assertions.*;
 import org.junit.runner.RunWith;
-import org.mockito.ArgumentMatcher;
-import org.mockito.InOrder;
+import org.mockito.*;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.mockito.stubbing.Answer;
-
-import static org.mockito.AdditionalMatchers.*;
 
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
+import static org.mockito.AdditionalMatchers.gt;
+import static org.mockito.AdditionalMatchers.or;
 import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -135,9 +138,9 @@ public class MockitoTest {
         when(itemsMock.get(or(eq(0), gt(10)))).thenReturn("sunil");
 
         //then
-        Assertions.assertEquals("sunil", itemsMock.get(0));
-        Assertions.assertEquals("sunil", itemsMock.get(11));
-        Assertions.assertEquals(isNull(), itemsMock.get(5));
+        assertEquals("sunil", itemsMock.get(0));
+        assertEquals("sunil", itemsMock.get(11));
+        assertEquals(isNull(), itemsMock.get(5));
 
     }
 
@@ -299,7 +302,7 @@ public class MockitoTest {
     @Test
     public void spyingOnRealObjects(){
         List<String> list = new LinkedList<>();
-        List<String> spy = spy(list);
+        List<String> spy = spy(LinkedList.class);
 
         //optionally, you can stub out some methods:
         when(spy.size()).thenReturn(100);
@@ -318,6 +321,52 @@ public class MockitoTest {
         verify(spy).add("one");
         verify(spy).add("two");
 
+    }
+
+    @Test(expected = IndexOutOfBoundsException.class)
+    public void gotchaInSpyingWrongWay(){
+        List<String> listSpy = spy(LinkedList.class);
+
+        // Wrong way to stub spy
+        when(listSpy.get(anyInt())).thenReturn("Sunil");
+
+        System.out.println(listSpy.get(1));
+
+        verify(listSpy).get(1);
+    }
+
+    @Test
+    public void gotchaInSpyingRightWay(){
+        List<String> listSpy = spy(LinkedList.class);
+
+        // Right way to stub spy
+        doReturn("Sunil").when(listSpy).get(1);
+
+        Assert.assertEquals("Sunil", listSpy.get(1));
+    }
+
+
+    @Captor
+    private ArgumentCaptor<Email> emailCaptor;
+
+    @Mock
+    private Platform platform;
+
+    @InjectMocks
+    private EmailService emailService;
+
+    @Test
+    public void argumentCaptor(){
+
+        String to = "sks.256@gmail.com";
+        String subject = "Using ArgumentCaptor";
+        String body = "Hey, let'use ArgumentCaptor";
+
+        emailService.sendEmail(to, subject, body, true);
+
+        verify(platform).sendEmail(emailCaptor.capture());
+
+        assertEquals(Format.HTML, emailCaptor.getValue().getFormat());
     }
 
 }

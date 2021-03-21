@@ -1,4 +1,4 @@
-package com.sunil;
+package com.sunil.mockito.misc;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
