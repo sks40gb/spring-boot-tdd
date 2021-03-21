@@ -5,9 +5,12 @@ import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
 import org.mockito.ArgumentMatcher;
 import org.mockito.InOrder;
+import org.mockito.invocation.InvocationOnMock;
+import org.mockito.stubbing.Answer;
 
 import static org.mockito.AdditionalMatchers.*;
 
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -177,10 +180,45 @@ public class MockitoTest {
         doThrow(new RuntimeException()).when(mockedList).clear();
 
         // Invalid syntax
-        //when(mockedList.clear()).thenThrow(new RuntimeException("Invalid values"));
+        when(mockedList.clear()).thenThrow(new RuntimeException("Invalid values"));
 
         //following throws RuntimeException:
         mockedList.clear();
+    }
+
+    @Test
+    public void stubbingVoidMethodWithNothing() {
+
+        //given
+        List<String> mockedList = mock(List.class);
+        doNothing().when(mockedList).clear();
+
+        //when
+        mockedList.clear();
+
+        //then
+        verify(mockedList).clear();
+    }
+
+    @Test
+    public void stubbingVoidMethodWithAnswer() {
+
+        //given
+        List<String> mockedList = mock(List.class);
+        doAnswer(new Answer<Void>() {
+            @Override
+            public Void answer(InvocationOnMock invocation) throws Throwable {
+                Object[] args = invocation.getArguments();
+                System.out.println("called with arguments: " + Arrays.toString(args));
+                return null;
+            }
+        }).when(mockedList).add(anyInt(), anyString());
+
+        //when
+        mockedList.add(1,"sunil");
+
+        //then
+        verify(mockedList).add(anyInt(), anyString());
     }
 
     @Test
@@ -223,7 +261,7 @@ public class MockitoTest {
     }
 
     @Test
-    public void interactionNeverHappened(){
+    public void interactionNeverHappened() {
         //given
         List<String> listMock = mock(List.class);
         //when(listMock.add(any())).thenReturn(true);
@@ -237,7 +275,7 @@ public class MockitoTest {
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void stubbingConsecutiveCalls(){
+    public void stubbingConsecutiveCalls() {
 
         //given
         List<String> listMock = mock(List.class);
