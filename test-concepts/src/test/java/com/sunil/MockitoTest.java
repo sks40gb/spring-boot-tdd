@@ -222,4 +222,37 @@ public class MockitoTest {
 
     }
 
+    @Test
+    public void interactionNeverHappened(){
+        //given
+        List<String> listMock = mock(List.class);
+        //when(listMock.add(any())).thenReturn(true);
+
+        //when
+        listMock.add("one");
+
+        //then
+        verify(listMock, times(1)).add("one");
+        verify(listMock, never()).add("two");
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void stubbingConsecutiveCalls(){
+
+        //given
+        List<String> listMock = mock(List.class);
+        when(listMock.add("sunil"))
+            .thenReturn(true)
+            .thenThrow(new IllegalArgumentException(" calling same twice"));
+
+        //when
+        System.out.println(listMock.add("sunil"));
+        System.out.println(listMock.add("sunil"));
+
+        //then
+        verify(listMock).add("sunil");
+        verify(listMock).add("sunil");
+
+    }
+
 }
