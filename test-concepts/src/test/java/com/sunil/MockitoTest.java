@@ -35,7 +35,7 @@ public class MockitoTest {
         verify(mockedList).clear();
     }
 
-    @Test
+    @Test(expected = IllegalArgumentException.class)
     public void someStabbing() {
 
         List<String> mockedList = mock(List.class);
@@ -45,7 +45,7 @@ public class MockitoTest {
 
         System.out.println(mockedList.get(0));
         // System.out.println(mockedList.get(1));
-        System.out.println(mockedList.get(2));
+        System.out.println(mockedList.get(1));
 
         //Assertions.assertThat(mockedList, doThrow(new IllegalArgumentException()));
 
