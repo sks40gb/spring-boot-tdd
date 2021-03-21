@@ -1,6 +1,12 @@
 package com.sunil;
 
+import org.junit.Assert;
 import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.mockito.ArgumentMatcher;
+import org.mockito.InOrder;
+
+import static org.mockito.AdditionalMatchers.*;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -113,5 +119,107 @@ public class MockitoTest {
 
     }
 
+
+    @Test
+    public void additionalMatches() {
+        //given
+        List<String> itemsMock = mock(List.class);
+
+        //when
+        when(itemsMock.get(or(eq(0), gt(10)))).thenReturn("sunil");
+
+        //then
+        Assertions.assertEquals("sunil", itemsMock.get(0));
+        Assertions.assertEquals("sunil", itemsMock.get(11));
+        Assertions.assertEquals(isNull(), itemsMock.get(5));
+
+    }
+
+    @Test
+    public void verifyNumberOfInvocation() {
+
+        List<String> mockedList = mock(List.class);
+        //using mock
+        mockedList.add("once");
+
+        mockedList.add("twice");
+        mockedList.add("twice");
+
+        mockedList.add("three times");
+        mockedList.add("three times");
+        mockedList.add("three times");
+
+        //following two verifications work exactly the same - times(1) is used by default
+        verify(mockedList).add("once");
+        verify(mockedList, times(1)).add("once");
+
+        //exact number of invocations verification
+        verify(mockedList, times(2)).add("twice");
+        verify(mockedList, times(3)).add("three times");
+
+        //verification using never(). never() is an alias to times(0)
+        verify(mockedList, never()).add("never happened");
+
+        //verification using atLeast()/atMost()
+        verify(mockedList, atMostOnce()).add("once");
+        verify(mockedList, atLeastOnce()).add("three times");
+        verify(mockedList, atLeast(2)).add("three times");
+        verify(mockedList, atMost(5)).add("three times");
+
+
+    }
+
+    @Test(expected = RuntimeException.class)
+    public void stubbingVoidMethodWithException() {
+
+        List<String> mockedList = mock(List.class);
+
+        doThrow(new RuntimeException()).when(mockedList).clear();
+
+        // Invalid syntax
+        //when(mockedList.clear()).thenThrow(new RuntimeException("Invalid values"));
+
+        //following throws RuntimeException:
+        mockedList.clear();
+    }
+
+    @Test
+    public void verificationInOrder() {
+        // A. Single mock whose methods must be invoked in a particular order
+        List singleMock = mock(List.class);
+
+        //using a single mock
+        singleMock.add("was added first");
+        singleMock.add("was added second");
+
+        //create an inOrder verifier for a single mock
+        InOrder inOrderA = inOrder(singleMock);
+
+        //following will make sure that add is first called with "was added first", then with "was added second"
+        inOrderA.verify(singleMock).add("was added first");
+        inOrderA.verify(singleMock).add("was added second");
+
+        // B. Multiple mocks that must be used in a particular order
+        List firstMock = mock(List.class);
+        List secondMock = mock(List.class);
+
+        //using mocks
+        firstMock.add("was called first");
+        secondMock.add("was called second");
+
+        //create inOrder object passing any mocks that need to be verified in order
+        InOrder inOrderB = inOrder(firstMock, secondMock);
+
+        //following will make sure that firstMock was called before secondMock
+        inOrderB.verify(firstMock).add("was called first");
+        inOrderB.verify(secondMock).add("was called second");
+
+        /*
+         It will fail since order is wrong
+         inOrderB.verify(firstMock).add("was called first");
+         inOrderB.verify(secondMock).add("was called second");
+        */
+
+    }
 
 }
