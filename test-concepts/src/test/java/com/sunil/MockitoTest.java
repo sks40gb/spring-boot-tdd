@@ -180,7 +180,7 @@ public class MockitoTest {
         doThrow(new RuntimeException()).when(mockedList).clear();
 
         // Invalid syntax
-        when(mockedList.clear()).thenThrow(new RuntimeException("Invalid values"));
+        // when(mockedList.clear()).thenThrow(new RuntimeException("Invalid values"));
 
         //following throws RuntimeException:
         mockedList.clear();
@@ -290,6 +290,30 @@ public class MockitoTest {
         //then
         verify(listMock).add("sunil");
         verify(listMock).add("sunil");
+
+    }
+
+    @Test
+    public void spyingOnRealObjects(){
+        List<String> list = new LinkedList<>();
+        List<String> spy = spy(list);
+
+        //optionally, you can stub out some methods:
+        when(spy.size()).thenReturn(100);
+
+        //using the spy calls *real* methods
+        spy.add("one");
+        spy.add("two");
+
+        //prints "one" - the first element of a list
+        System.out.println(spy.get(0));
+
+        //size() method was stubbed - 100 is printed
+        System.out.println(spy.size());
+
+        //optionally, you can verify
+        verify(spy).add("one");
+        verify(spy).add("two");
 
     }
 
