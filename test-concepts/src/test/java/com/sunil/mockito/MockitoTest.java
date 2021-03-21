@@ -20,6 +20,7 @@ import java.util.List;
 import static org.mockito.AdditionalMatchers.gt;
 import static org.mockito.AdditionalMatchers.or;
 import static org.mockito.Mockito.*;
+import static org.mockito.BDDMockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
 public class MockitoTest {
@@ -367,6 +368,35 @@ public class MockitoTest {
         verify(platform).sendEmail(emailCaptor.capture());
 
         assertEquals(Format.HTML, emailCaptor.getValue().getFormat());
+    }
+
+    @Test
+    public void resetMock(){
+        //given
+        List<String> listMock = mock(List.class);
+        when(listMock.get(1)).thenReturn("Sunil");
+
+        //when
+        System.out.println(listMock.get(1)); // this will print Sunil
+
+        reset(listMock);
+
+        //when
+        System.out.println(listMock.get(1)); //this will print null
+
+    }
+
+    @Test
+    public void BDDAliases(){
+        //given
+        List<String> listMock = mock(List.class);
+        given(listMock.get(1)).willReturn("BDD : Sunil");
+
+        //when
+        System.out.println(listMock.get(1));
+
+        //then
+        verify(listMock).get(1);
     }
 
 }
