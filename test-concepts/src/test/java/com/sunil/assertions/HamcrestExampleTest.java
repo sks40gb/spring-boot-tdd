@@ -29,26 +29,16 @@ public class HamcrestExampleTest {
     }
 
     @Test
-    public void listShouldInitiallyBeEmpty() {
+    public void test_list() {
         List<Integer> list = Arrays.asList(5, 2, 4);
 
         assertThat(list, hasSize(3));
 
         // ensure the order is correct
         assertThat(list, contains(5, 2, 4));
-
-        assertThat(list, containsInAnyOrder(2, 4, 5));
-
-        assertThat(list, everyItem(greaterThan(1)));
-
-    }
-
-    @Test
-    public void test_list() {
-        List<Integer> list = Arrays.asList(5, 2, 4);
-        assertThat(list, hasSize(3));
         assertThat(list, containsInAnyOrder(2, 4, 5));
         assertThat(list, everyItem(greaterThan(1)));
+
     }
 
     @Test
