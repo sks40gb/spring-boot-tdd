@@ -1,5 +1,8 @@
 package com.sunil.assertions;
 
+import lombok.Data;
+
+@Data
 public class Task {
 
     private final long id;
@@ -11,21 +14,5 @@ public class Task {
         this.id = id;
         this.summary = summary;
         this.description = description;
-    }
-
-    public long getId() {
-        return id;
-    }
-
-    public String getSummary() {
-        return summary;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public int getYear() {
-        return year;
     }
 }
