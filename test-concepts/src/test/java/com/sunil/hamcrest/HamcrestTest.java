@@ -181,6 +181,29 @@ public class HamcrestTest {
     }
 
     @Test
+    public void string(){
+
+        //hasLength
+        assertThat("Sunil", hasLength(5));
+
+        //equalToIgnoringCase
+        assertThat("Sunil", equalToIgnoringCase("SUNIL"));
+
+        //containsString
+        assertThat("Sunil", containsString("Sun"));
+
+        //startsWith
+        assertThat("Sunil", startsWith("Su"));
+
+        //endsWith
+        assertThat("Sunil", endsWith("nil"));
+
+        //endsWithIgnoringCase
+        assertThat("Sunil", endsWithIgnoringCase("NIL"));
+
+    }
+
+    @Test
     public void differenceBetweenIsAndEqualTo(){
 
         // `is` in all its overloaded forms is there for expressiveness.
