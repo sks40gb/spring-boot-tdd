@@ -8,6 +8,7 @@ import java.util.List;
 import static org.hamcrest.collection.IsIterableContainingInAnyOrder.*;
 import static org.hamcrest.object.HasToString.*;
 import static org.hamcrest.object.IsCompatibleType.*;
+import org.hamcrest.beans.HasProperty;
 import org.junit.Test;
 
 public class HamcrestTest {
@@ -61,6 +62,21 @@ public class HamcrestTest {
         assertThat(sunil1.getClass(), typeCompatibleWith(Employee.class));
         assertThat(Integer.class, typeCompatibleWith(Number.class));
 
+        //nullValue
+        assertThat(null, nullValue());
+
+        //notNullValue
+        assertThat(sunil1, notNullValue());
+
+        //sameInstance
+        assertThat(sunil1, sameInstance(sunil1));
+
+    }
+
+    @Test
+    public void beans(){
+        Employee sunil = new Employee(1,"Sunil");
+        assertThat(sunil, HasProperty.hasProperty("name"));
     }
 
     @Test
