@@ -81,6 +81,27 @@ public class HamcrestTest {
     }
 
     @Test
+    public void array(){
+
+        Employee sunil = new Employee(1, "Sunil");
+        Employee john = new Employee(2, "John");
+        Employee alan = new Employee(3, "Alan");
+
+        Employee[] originalArray = {sunil, john, alan};
+        Employee[] matchedOrderArray = {sunil, john, alan};
+        Employee[] unmatchedOrderArray = {sunil, alan, john};
+
+        //arrayWithSize
+        assertThat(originalArray, arrayWithSize(3));
+
+        //arrayContaining
+        assertThat(originalArray, arrayContaining(matchedOrderArray));
+
+        //arrayContainingInAnyOrder
+        assertThat(originalArray, arrayContainingInAnyOrder(matchedOrderArray));
+    }
+
+    @Test
     public void differenceBetweenIsAndEqualTo(){
 
         // `is` in all its overloaded forms is there for expressiveness.
@@ -96,7 +117,6 @@ public class HamcrestTest {
         assertThat(sunil1, is(instanceOf(Employee.class))); //<-- recommended
         //is equal to
         assertThat(sunil1, isA(Employee.class));            //<-- check for the Class Type
-
 
     }
 }
