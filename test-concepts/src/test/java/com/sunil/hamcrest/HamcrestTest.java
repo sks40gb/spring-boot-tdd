@@ -36,6 +36,7 @@ public class HamcrestTest {
 
     @Test
     public void object(){
+
         Employee sunil1 = new Employee(1,"Sunil");
         Employee sunil2 = new Employee(1,"Sunil");
 
@@ -68,6 +69,7 @@ public class HamcrestTest {
 
     @Test
     public void beans(){
+
         Employee sunil = new Employee(1,"Sunil");
 
         //hasProperty
@@ -80,6 +82,7 @@ public class HamcrestTest {
 
     @Test
     public void differenceBetweenIsAndEqualTo(){
+
         // `is` in all its overloaded forms is there for expressiveness.
         Employee sunil1 = new Employee(1,"Sunil");
         Employee sunil2 = new Employee(1,"Sunil");
