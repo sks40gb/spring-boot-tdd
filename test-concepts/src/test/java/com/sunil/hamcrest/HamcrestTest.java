@@ -98,6 +98,9 @@ public class HamcrestTest {
         //arrayContaining
         assertThat(employeeArray, arrayContaining(orderedArray));
 
+        //hasItemInArray
+        assertThat(employeeArray, hasItemInArray(alan));
+
         //arrayContainingInAnyOrder
         assertThat(employeeArray, arrayContainingInAnyOrder(unorderedArray));
 
@@ -130,6 +133,7 @@ public class HamcrestTest {
 
         //hasItems
         assertThat(employeeList, hasItems(john, sunil));
+
     }
 
     @Test
@@ -152,6 +156,28 @@ public class HamcrestTest {
         //hasEntry
         assertThat(map, hasEntry(1,sunil));
 
+    }
+
+    @Test
+    public void number(){
+
+        //closeTo(value,delta)
+        assertThat(1.03, is(equalTo(1.03)));
+
+        //closeTo(value,delta)
+        assertThat(1.03, is(closeTo(1.0, 0.04)));
+
+        //lessThan
+        assertThat(5, lessThan(10));
+
+        //lessThanOrEqualTo
+        assertThat(5, lessThanOrEqualTo(10));
+
+        //greaterThan
+        assertThat(5, greaterThan(2));
+
+        //greaterThanOrEqualTo
+        assertThat(5, greaterThanOrEqualTo(5));
     }
 
     @Test
