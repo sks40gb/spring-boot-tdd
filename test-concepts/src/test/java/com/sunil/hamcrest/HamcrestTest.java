@@ -1,5 +1,6 @@
 package com.sunil.hamcrest;
 
+import java.util.*;
 import org.junit.Test;
 import static org.hamcrest.Matchers.*;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -87,18 +88,70 @@ public class HamcrestTest {
         Employee john = new Employee(2, "John");
         Employee alan = new Employee(3, "Alan");
 
-        Employee[] originalArray = {sunil, john, alan};
-        Employee[] matchedOrderArray = {sunil, john, alan};
-        Employee[] unmatchedOrderArray = {sunil, alan, john};
+        Employee[] employeeArray = {sunil, john, alan};
+        Employee[] orderedArray = {sunil, john, alan};
+        Employee[] unorderedArray = {sunil, alan, john};
 
         //arrayWithSize
-        assertThat(originalArray, arrayWithSize(3));
+        assertThat(employeeArray, arrayWithSize(3));
 
         //arrayContaining
-        assertThat(originalArray, arrayContaining(matchedOrderArray));
+        assertThat(employeeArray, arrayContaining(orderedArray));
 
         //arrayContainingInAnyOrder
-        assertThat(originalArray, arrayContainingInAnyOrder(matchedOrderArray));
+        assertThat(employeeArray, arrayContainingInAnyOrder(unorderedArray));
+
+        //emptyArray
+        assertThat(new Employee[0], emptyArray());
+    }
+
+    @Test
+    public void collections(){
+
+        Employee sunil = new Employee(1, "Sunil");
+        Employee john = new Employee(2, "John");
+        Employee alan = new Employee(3, "Alan");
+
+        Collection<Employee> employeeList = Arrays.asList(sunil,john,alan);
+        Collection<Employee> orderedList = Arrays.asList(sunil,john,alan);
+        Collection<Employee> unorderedList = Arrays.asList(sunil,john,alan);
+
+        //iterableWithSize
+        assertThat(employeeList, iterableWithSize(3));
+
+        //contains
+        assertThat(employeeList, contains(sunil, john, alan));
+
+        //containsInAnyOrder
+        assertThat(employeeList, containsInAnyOrder(unorderedList.toArray()));
+
+        //hasItem
+        assertThat(employeeList, hasItem(alan));
+
+        //hasItems
+        assertThat(employeeList, hasItems(john, sunil));
+    }
+
+    @Test
+    public void map(){
+        Employee sunil = new Employee(1, "Sunil");
+        Employee john = new Employee(2, "John");
+        Employee alan = new Employee(3, "Alan");
+
+        Map<Integer, Employee> map = new HashMap<>();
+        map.put(sunil.getId(), sunil);
+        map.put(john.getId(), john);
+        map.put(alan.getId(), alan);
+
+        //hasKey
+        assertThat(map, hasKey(1));
+
+        //hasValue
+        assertThat(map, hasValue(sunil));
+
+        //hasEntry
+        assertThat(map, hasEntry(1,sunil));
+
     }
 
     @Test
