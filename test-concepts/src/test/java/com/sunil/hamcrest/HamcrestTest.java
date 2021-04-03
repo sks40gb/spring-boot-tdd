@@ -1,15 +1,8 @@
 package com.sunil.hamcrest;
 
-import static org.hamcrest.MatcherAssert.*;
-import  static org.hamcrest.CoreMatchers.*;
-import static org.hamcrest.text.CharSequenceLength.*;
-import java.util.Arrays;
-import java.util.List;
-import static org.hamcrest.collection.IsIterableContainingInAnyOrder.*;
-import static org.hamcrest.object.HasToString.*;
-import static org.hamcrest.object.IsCompatibleType.*;
-import org.hamcrest.beans.HasProperty;
 import org.junit.Test;
+import static org.hamcrest.Matchers.*;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 public class HamcrestTest {
 
@@ -76,7 +69,13 @@ public class HamcrestTest {
     @Test
     public void beans(){
         Employee sunil = new Employee(1,"Sunil");
-        assertThat(sunil, HasProperty.hasProperty("name"));
+
+        //hasProperty
+        assertThat(sunil, hasProperty("name"));
+
+        assertThat(sunil, hasProperty("name",equalTo("Sunil")));
+
+
     }
 
     @Test
