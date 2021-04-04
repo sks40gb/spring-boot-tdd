@@ -4,26 +4,25 @@ import com.sunil.email.Email;
 import com.sunil.email.EmailService;
 import com.sunil.email.Format;
 import com.sunil.email.Platform;
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
+import org.aspectj.bridge.Message;
 import org.hamcrest.MatcherAssert;
 import org.junit.Assert;
 import org.junit.Test;
-import static org.junit.jupiter.api.Assertions.*;
 import org.junit.runner.RunWith;
 import org.mockito.*;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.mockito.stubbing.Answer;
-
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
-
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.AdditionalMatchers.gt;
 import static org.mockito.AdditionalMatchers.or;
+import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.*;
-import static org.mockito.BDDMockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
 public class MockitoTest {
@@ -145,6 +144,40 @@ public class MockitoTest {
         assertEquals("sunil", itemsMock.get(0));
         assertEquals("sunil", itemsMock.get(11));
         assertEquals(isNull(), itemsMock.get(5));
+
+    }
+
+    @Test
+    public void customMatcher(){
+
+        ArgumentMatcher<Integer> even = new ArgumentMatcher<Integer>() {
+            @Override
+            public boolean matches(Integer index) {
+                return index%2 == 0;
+            }
+        };
+
+        ArgumentMatcher<Integer> odd = new ArgumentMatcher<Integer>() {
+            @Override
+            public boolean matches(Integer index) {
+                return index%2 == 1;
+            }
+        };
+
+
+        List<String> listMock = mock(List.class);
+
+        // Note that argThat(org.mockito.ArgumentMatcher) will not
+        // work with primitive int matchers due to NullPointerException auto-unboxing caveat.
+//        when(listMock.get(argThat(odd))).thenReturn("Odd"); //<-- it will not work
+
+        when(listMock.get(intThat(odd))).thenReturn("Odd");
+        when(listMock.get(intThat(even))).thenReturn("Even");
+
+        assertEquals(listMock.get(0), "Even");
+        assertEquals(listMock.get(1), "Odd");
+        assertEquals(listMock.get(2), "Even");
+        assertEquals(listMock.get(3), "Odd");
 
     }
 
