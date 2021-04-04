@@ -7,7 +7,6 @@ import com.sunil.email.Platform;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
-import org.aspectj.bridge.Message;
 import org.hamcrest.MatcherAssert;
 import org.junit.Assert;
 import org.junit.Test;
@@ -19,6 +18,7 @@ import org.mockito.stubbing.Answer;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.AdditionalMatchers.gt;
 import static org.mockito.AdditionalMatchers.or;
 import static org.mockito.BDDMockito.given;
@@ -148,7 +148,7 @@ public class MockitoTest {
     }
 
     @Test
-    public void customMatcher(){
+    public void customMatcherPrimitive(){
 
         ArgumentMatcher<Integer> even = new ArgumentMatcher<Integer>() {
             @Override
@@ -179,6 +179,33 @@ public class MockitoTest {
         assertEquals(listMock.get(2), "Even");
         assertEquals(listMock.get(3), "Odd");
 
+    }
+
+    @Test
+    public void customMatcherNonPrimitive(){
+        ArgumentMatcher<Gender> femaleGender = new ArgumentMatcher<Gender>() {
+            @Override
+            public boolean matches(Gender gender) {
+                return gender == Gender.FEMALE;
+            }
+        };
+
+        ArgumentMatcher<String> messageMatcher = new ArgumentMatcher<String>() {
+            @Override
+            public boolean matches(String message) {
+                return message.length() < 10;
+            }
+        };
+
+        Message message = mock(Message.class);
+        when(message.getGreeting(argThat(femaleGender), argThat(messageMatcher)))
+            .thenReturn("Mrs. xxx welcome");
+
+        String maleGreeting = message.getGreeting(Gender.MALE, "Sunil");
+        assertNull(maleGreeting);
+
+        String femaleGreeting = message.getGreeting(Gender.FEMALE, "Sheena");
+        assertEquals(femaleGreeting, "Mrs. xxx welcome");
     }
 
     @Test
