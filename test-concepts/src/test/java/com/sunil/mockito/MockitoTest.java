@@ -250,7 +250,7 @@ public class MockitoTest {
     @Test
     public void verificationInOrder() {
         // A. Single mock whose methods must be invoked in a particular order
-        List singleMock = mock(List.class);
+        List<String> singleMock = mock(List.class);
 
         //using a single mock
         singleMock.add("was added first");
@@ -264,8 +264,8 @@ public class MockitoTest {
         inOrderA.verify(singleMock).add("was added second");
 
         // B. Multiple mocks that must be used in a particular order
-        List firstMock = mock(List.class);
-        List secondMock = mock(List.class);
+        List<String> firstMock = mock(List.class);
+        List<String> secondMock = mock(List.class);
 
         //using mocks
         firstMock.add("was called first");
