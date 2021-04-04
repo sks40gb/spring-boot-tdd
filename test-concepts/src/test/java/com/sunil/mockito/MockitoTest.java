@@ -4,6 +4,7 @@ import com.sunil.email.Email;
 import com.sunil.email.EmailService;
 import com.sunil.email.Format;
 import com.sunil.email.Platform;
+import org.hamcrest.MatcherAssert;
 import org.junit.Assert;
 import org.junit.Test;
 import static org.junit.jupiter.api.Assertions.*;
@@ -17,6 +18,8 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.is;
 import static org.mockito.AdditionalMatchers.gt;
 import static org.mockito.AdditionalMatchers.or;
 import static org.mockito.Mockito.*;
@@ -61,7 +64,7 @@ public class MockitoTest {
 
 
     @Test
-    public void argumentMatcher1() {
+    public void argumentMatcherSomeExamples() {
 
         // given
         LinkedList<String> mockedLinkedList = mock(LinkedList.class);
@@ -79,27 +82,27 @@ public class MockitoTest {
     }
 
 
-    interface Dry {
-        String dryRun(Boolean flag);
+    interface Employee {
+        String getName(Boolean flag);
     }
 
     @Test
     public void argumentMatcherForNull() {
 
-        Dry mock = mock(Dry.class);
+        Employee employeeMock = mock(Employee.class);
         // stubbing using anyBoolean() argument matcher
-        when(mock.dryRun(any(Boolean.class))).thenReturn("state");
+        when(employeeMock.getName(ArgumentMatchers.any(Boolean.class))).thenReturn("state");
 
         // below the stub won't match, and won't return "state"
-        System.out.println(mock.dryRun(null));
+        System.out.println(employeeMock.getName(null));
 
         // either change the stub
-        when(mock.dryRun(isNull())).thenReturn("state");
-        System.out.println(mock.dryRun(null)); // ok
+        when(employeeMock.getName(isNull())).thenReturn("state");
+        System.out.println(employeeMock.getName(null)); // ok
 
         // or fix the code ;)
-        when(mock.dryRun(anyBoolean())).thenReturn("state");
-        mock.dryRun(true); // ok
+        when(employeeMock.getName(anyBoolean())).thenReturn("state");
+        employeeMock.getName(true); // ok
     }
 
     static class MyClass {
@@ -110,7 +113,7 @@ public class MockitoTest {
     }
 
     @Test
-    public void whenThenReturnVSdoReturnWhenCase1() {
+    public void whenThenReturn_vs_doReturnWhenCase1() {
 
         MyClass myClass = spy(MyClass.class);
         // would work fine
@@ -119,7 +122,7 @@ public class MockitoTest {
     }
 
     @Test(expected = NullPointerException.class)
-    public void whenThenReturnVSdoReturnWhenCase2() {
+    public void whenThenReturn_vs_doReturnWhenCase2() {
 
         MyClass myClass = spy(MyClass.class);
 
@@ -208,6 +211,22 @@ public class MockitoTest {
     }
 
     @Test
+    public void stubbingWithAnswer(){
+        List<String> listMock = mock(List.class);
+
+        when(listMock.get(anyInt()))
+            .thenAnswer(new Answer<String>() {
+                @Override
+                public String answer(InvocationOnMock invocationOnMock) throws Throwable {
+                    Arrays.stream(invocationOnMock.getArguments()).forEach(System.out::println);
+                    return "Sunil";
+                }
+            });
+        String name = listMock.get(100);
+        MatcherAssert.assertThat(name, is(equalTo("Sunil"))); ;
+    }
+
+    @Test
     public void stubbingVoidMethodWithAnswer() {
 
         //given
@@ -259,11 +278,11 @@ public class MockitoTest {
         inOrderB.verify(firstMock).add("was called first");
         inOrderB.verify(secondMock).add("was called second");
 
-        /*
-         It will fail since order is wrong
-         inOrderB.verify(firstMock).add("was called first");
-         inOrderB.verify(secondMock).add("was called second");
-        */
+
+         //It will fail since order is wrong
+//         inOrderB.verify(secondMock).add("was called second");
+//         inOrderB.verify(firstMock).add("was called first");
+
 
     }
 
