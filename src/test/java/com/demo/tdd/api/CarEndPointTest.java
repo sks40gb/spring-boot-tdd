@@ -1,4 +1,4 @@
-package com.demo.tdd;
+package com.demo.tdd.api;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
@@ -16,7 +16,7 @@ import com.demo.tdd.domain.Car;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = RANDOM_PORT)
-public class TddApplicationTests {
+public class CarEndPointTest {
 
 	@Autowired
 	private TestRestTemplate restTemplate;

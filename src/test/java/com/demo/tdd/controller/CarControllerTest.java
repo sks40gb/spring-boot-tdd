@@ -35,7 +35,8 @@ public class CarControllerTest {
 				.willReturn(new Car("prius", "hybrid"));
 
 		mockMvc.perform(MockMvcRequestBuilders.get("/cars/prius"))
-				.andExpect(status().isOk()).andExpect(jsonPath("name").value("prius"))
+				.andExpect(status().isOk())
+			    .andExpect(jsonPath("name").value("prius"))
 				.andExpect(jsonPath("type").value("hybrid"));
 
 	}
