@@ -1,6 +1,9 @@
 package com.sunil.hamcrest;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 import org.junit.Test;
 import static org.hamcrest.Matchers.*;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -8,7 +11,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 public class HamcrestTest {
 
     @Test
-    public void core(){
+    public void core() {
 
         //Anything
         assertThat("Sunil", anything());
@@ -19,7 +22,7 @@ public class HamcrestTest {
     }
 
     @Test
-    public void logical(){
+    public void logical() {
 
         //allOf
         assertThat("Sunil", allOf(is("Sunil"), hasLength(5)));
@@ -36,10 +39,10 @@ public class HamcrestTest {
     }
 
     @Test
-    public void object(){
+    public void object() {
 
-        Employee sunil1 = new Employee(1,"Sunil");
-        Employee sunil2 = new Employee(1,"Sunil");
+        Employee sunil1 = new Employee(1, "Sunil");
+        Employee sunil2 = new Employee(1, "Sunil");
 
         //It will match even the instances are different but the content is same
         assertThat(sunil1, is(sunil2));
@@ -69,20 +72,20 @@ public class HamcrestTest {
     }
 
     @Test
-    public void beans(){
+    public void beans() {
 
-        Employee sunil = new Employee(1,"Sunil");
+        Employee sunil = new Employee(1, "Sunil");
 
         //hasProperty
         assertThat(sunil, hasProperty("name"));
 
-        assertThat(sunil, hasProperty("name",equalTo("Sunil")));
+        assertThat(sunil, hasProperty("name", equalTo("Sunil")));
 
 
     }
 
     @Test
-    public void array(){
+    public void array() {
 
         Employee sunil = new Employee(1, "Sunil");
         Employee john = new Employee(2, "John");
@@ -109,15 +112,15 @@ public class HamcrestTest {
     }
 
     @Test
-    public void collections(){
+    public void collections() {
 
         Employee sunil = new Employee(1, "Sunil");
         Employee john = new Employee(2, "John");
         Employee alan = new Employee(3, "Alan");
 
-        Collection<Employee> employeeList = Arrays.asList(sunil,john,alan);
-        Collection<Employee> orderedList = Arrays.asList(sunil,john,alan);
-        Collection<Employee> unorderedList = Arrays.asList(sunil,john,alan);
+        Collection<Employee> employeeList = Arrays.asList(sunil, john, alan);
+        Collection<Employee> orderedList = Arrays.asList(sunil, john, alan);
+        Collection<Employee> unorderedList = Arrays.asList(sunil, john, alan);
 
         //iterableWithSize
         assertThat(employeeList, iterableWithSize(3));
@@ -137,7 +140,7 @@ public class HamcrestTest {
     }
 
     @Test
-    public void map(){
+    public void map() {
         Employee sunil = new Employee(1, "Sunil");
         Employee john = new Employee(2, "John");
         Employee alan = new Employee(3, "Alan");
@@ -154,12 +157,12 @@ public class HamcrestTest {
         assertThat(map, hasValue(sunil));
 
         //hasEntry
-        assertThat(map, hasEntry(1,sunil));
+        assertThat(map, hasEntry(1, sunil));
 
     }
 
     @Test
-    public void number(){
+    public void number() {
 
         //closeTo(value,delta)
         assertThat(1.03, is(equalTo(1.03)));
@@ -181,7 +184,7 @@ public class HamcrestTest {
     }
 
     @Test
-    public void string(){
+    public void string() {
 
         //hasLength
         assertThat("Sunil", hasLength(5));
@@ -204,11 +207,11 @@ public class HamcrestTest {
     }
 
     @Test
-    public void differenceBetweenIsAndEqualTo(){
+    public void differenceBetweenIsAndEqualTo() {
 
         // `is` in all its overloaded forms is there for expressiveness.
-        Employee sunil1 = new Employee(1,"Sunil");
-        Employee sunil2 = new Employee(1,"Sunil");
+        Employee sunil1 = new Employee(1, "Sunil");
+        Employee sunil2 = new Employee(1, "Sunil");
 
         // Case 1 :
         assertThat(sunil1, is(equalTo(sunil2))); //<-- recommended
