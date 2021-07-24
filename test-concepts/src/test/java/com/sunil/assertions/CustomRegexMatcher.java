@@ -3,11 +3,11 @@ package com.sunil.assertions;
 import org.hamcrest.Description;
 import org.hamcrest.TypeSafeMatcher;
 
-public class RegexMatcher extends TypeSafeMatcher<String> {
+public class CustomRegexMatcher extends TypeSafeMatcher<String> {
 
     private final String regex;
 
-    public RegexMatcher(final String regex) {
+    public CustomRegexMatcher(final String regex) {
         this.regex = regex;
     }
 
@@ -23,7 +23,7 @@ public class RegexMatcher extends TypeSafeMatcher<String> {
 
 
     // matcher method you can call on this matcher class
-    public static RegexMatcher matchesRegex(final String regex) {
-        return new RegexMatcher(regex);
+    public static CustomRegexMatcher matchesRegex(final String regex) {
+        return new CustomRegexMatcher(regex);
     }
 }

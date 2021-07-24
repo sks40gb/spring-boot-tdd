@@ -1,31 +1,27 @@
 package com.sunil.assertions;
 
-import static org.hamcrest.MatcherAssert.*;
-import static org.hamcrest.Matchers.*;
 import java.util.Arrays;
 import java.util.List;
-import lombok.Data;
 import org.hamcrest.FeatureMatcher;
 import org.hamcrest.Matcher;
 import org.junit.Test;
+import static org.hamcrest.Matchers.*;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 public class HamcrestExampleTest {
 
     @Test
     public void hamcrestExample() {
-        boolean a = true;
-        boolean b = true;
-
-        assertThat(a, equalTo(b));
-        assertThat(a, is(equalTo(b)));
-        assertThat(a, is(b));
+        assertThat(true, equalTo(true));
+        assertThat(true, is(equalTo(true)));
+        assertThat(true, is(true));
     }
 
     @Test
     public void instanceOfTest() {
-        assertThat(Long.valueOf(1), not(instanceOf(Integer.class)));
+        assertThat(1L, not(instanceOf(Integer.class)));
         // shortcut for instanceOf
-        assertThat(Long.valueOf(1), isA(Long.class));
+        assertThat(1L, isA(Long.class));
     }
 
     @Test
@@ -84,7 +80,7 @@ public class HamcrestExampleTest {
     @Test
     public void testRegularExpressionMatcher() throws Exception {
         String s ="aaabbbaaaa";
-        assertThat(s, RegexMatcher.matchesRegex("a*b*a*"));
+        assertThat(s, CustomRegexMatcher.matchesRegex("a*b*a*"));
     }
 
 }
